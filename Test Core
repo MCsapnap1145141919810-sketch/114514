@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+hello_github.py
+一个超简单的测试脚本：
+- 打印信息（证明能运行）
+- 写入 run.log（证明有输出）
+- 读取 data.txt（如果存在）
+"""
+
+from __future__ import annotations
+from pathlib import Path
+from datetime import datetime
+
+
+def main() -> None:
+    here = Path(__file__).resolve().parent
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    msg_lines = [
+        "✅ Hello from GitHub repo!",
+        f"🕒 Time: {now}",
+        f"📁 Current folder: {here}",
+    ]
+
+    data_file = here / "data.txt"
+    if data_file.exists():
+        content = data_file.read_text(encoding="utf-8", errors="replace").strip()
+        msg_lines.append("📄 data.txt found. Content preview:")
+        msg_lines.append(content[:200] if content else "(data.txt is empty)")
+    else:
+        msg_lines.append("ℹ️ data.txt not found. (You can create it to test reading.)")
+
+    out = "\n".join(msg_lines)
+    print(out)
+
+    # write a log
+    log_file = here / "run.log"
+    log_file.write_text(out + "\n", encoding="utf-8")
+    print(f"📝 Wrote log to: {log_file}")
+
+
+if __name__ == "__main__":
+    main()
